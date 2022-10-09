@@ -1,6 +1,8 @@
 import numbers
 from re import L
 from django.shortcuts import render, redirect
+from .forms import RegisterForm, UserCreationForm
+from django.contrib.auth import login, logout, authenticate
 
 # Create your views here.
 
@@ -198,3 +200,16 @@ def final(request):
         'cwa': round(cwa,2),
     }
     return render(request, 'final.html', context)
+
+
+def register(request):
+    form = UserCreationForm()
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+            login(request, user)
+            return redirect('home')
+    context = {'form': form,}
+    return render(request, 'register.html', {'form':form})
