@@ -1,0 +1,17 @@
+
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+    <h1>Welcome To CWA calculator! </h1>
+
+    <form class="form-group" action="{% url 'two' %}" method="post">
+        {% csrf_token %}
+        <hr>Enter the number of courses: <input type="number" name="number" id="number"><hr>
+        Do you want to randomize?: <input type="checkbox" name="randomize" id="randomize">
+        <hr>
+        <input type="submit" value="Next">
+    </form>
+
+{% endblock content %}

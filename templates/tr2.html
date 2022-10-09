@@ -1,0 +1,16 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<form action="{% url 'new' %}" method="POST">
+        {% csrf_token %}
+        <hr>Enter the upper bound: <input type="number" name="upper-bound" id="upper-bound"><hr>
+        <hr>Enter the lower bound: <input type="number" name="lower-bound" id="lower-bound"><hr>
+        <hr>Enter the credits: <input type="number" name="_credits" id="_credits"><hr>
+        <input type="submit" value="Next">
+    </form>
+<h3>Number of courses selected: {{n}}</h3>
+{% endblock content %}
+    
+    
+    

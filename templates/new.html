@@ -1,0 +1,27 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<body>
+    <div>
+      <h1>
+        The results are shown below:
+      </h1>
+      {% for obj in p1 %}
+
+      <div class="course">
+        <hr>
+        <div class="label" style="margin: 10px;">{{obj.part1}}</div>
+        <div class="label2" style="margin: 10px;">{{obj.part2}}</div>
+        <div class="label3" style="margin: 10px;">{{obj.part3}}</div>
+        
+      </div>
+
+      {% endfor %}
+      
+    </div>
+    <h1>CWA: {{cwa}} </h1>
+    <h1><a href="{% url 'home'%}">Try Again</a></h1>
+    
+{% endblock content %}
+  

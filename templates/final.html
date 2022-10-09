@@ -1,0 +1,15 @@
+{% extends 'main.html' %} {% block content %} 
+<h1>The results are shown below: </h1>
+{% for i in sup %}
+
+      <div class="course">
+        <hr>
+        <div class="label" style="margin: 10px;">Course[{{i.p2}}] score: {{i.p0}}</div>
+        <div class="label2" style="margin: 10px;">Credit hour(s): {{i.p1}}</div>
+        
+      </div>
+
+{% endfor %}
+<hr>
+<h1>Your CWA is: {{cwa}}</h1> <a href="{% url 'home' %}"><h3>Calculate Again</h3></a>
+{% endblock content %}

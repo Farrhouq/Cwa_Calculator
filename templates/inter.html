@@ -1,0 +1,36 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+
+<div style="padding: 10px;"><h1>Enter the scores below: </h1></div>
+    
+    <!-- <form  action="{% url 'final' %}" method="POST">
+        {% csrf_token %}
+        {% for n in numbers %}
+        Course score {{n}}: <input type="text" name="sc{{n}}" id="sc{{n}}">
+        Credits : <input type="number" name="cr{{n}}" id="cr{{n}}"><hr>
+        {% endfor %}
+        
+        <hr>
+        
+
+    </form> -->
+
+    <form action="{% url 'final' %}" method="POST">
+        {% csrf_token %}
+        {% for n in numbers %}
+    <div class="row">
+        <div class="col">
+          <input type="number" class="form-control" name="sc{{n}}" placeholder="Course {{n}} score" aria-label="First name">
+        </div>
+        <div class="col">
+          <input type="number" class="form-control" name="cr{{n}}" placeholder="Credit hours " aria-label="Last name" style="margin-bottom: 15px;">
+        </div>
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary">Next</button>
+    </form>
+{% endblock content %}
+
