@@ -144,6 +144,11 @@ def new(request):
 
 
 def inter(request):
+    try:
+        i = int(number)
+    except:
+        return redirect('home')
+
     if number == 0 or number == None:
         return redirect('home')
     else:
@@ -187,12 +192,16 @@ def final(request):
 
     points_obtained = 0
     total_credits = 0
-    for i in range(len(listq)):
-        el = New(listq[i])
-        score = int(el.p0)
-        credit = int(el.p1)
-        points_obtained += (score * credit)
-        total_credits += credit
+    try:
+        for i in range(len(listq)):
+            el = New(listq[i])
+            score = int(el.p0)
+            credit = int(el.p1)
+            points_obtained += (score * credit)
+            total_credits += credit
+    except:
+        return redirect('inter')
+
 
     if request.user.is_authenticated:
         user_results = request.user.resultset_set.all()
