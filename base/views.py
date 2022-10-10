@@ -171,9 +171,10 @@ def tr2(request):
 
 
 def final(request):
+    
     if request.POST.get('sc1') == None:
         return redirect('home')
-        
+
     gotten = []
     gotten2 = []
     ov = []
@@ -182,6 +183,8 @@ def final(request):
         ov.append(n)
         gotten.append(request.POST.get('sc' + str(n)))
         gotten2.append(request.POST.get('cr' + str(n)))
+
+    
 
     a = gotten
     b = gotten2
@@ -217,9 +220,7 @@ def final(request):
     if len(ov) == 0:
         return redirect('home')
 
-    if number == 0 or number == None:
-        return redirect('home')
-
+    
     sup = []
     for i in listq:
         el = New(i)
@@ -238,6 +239,7 @@ def final(request):
         'cwa': round(cwa,2),
         
     }
+    
     return render(request, 'final.html', context)
 
 
