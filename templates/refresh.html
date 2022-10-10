@@ -1,0 +1,10 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <div class="container" style="width: 80%;">
+<h4>Are you sure you want to delete all your data?(This cannot be undone)</h4>
+<a href="{% url 'delete_all' %}" class="btn btn-danger" style="margin:10px">Yes</a>
+<a href="{{ request.META.HTTP_REFERER }}" class="btn btn-info" style="margin:10px">No</a>
+    </div>
+
+{% endblock content %}
