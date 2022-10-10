@@ -1,16 +1,50 @@
-{% extends 'main.html' %}
+{% extends 'main.html' %} {% block content %}
 
-{% block content %}
+<div class="container" style="width: 50%; margin-top: 80px">
+  <h5>Number of courses selected: {{n}}</h5>
+  <p style="color: red">
+    Make sure the length of the credits match the number of courses selected
+  </p>
+  <form action="{% url 'new' %}" method="POST">
+    {% csrf_token %}
 
-<form action="{% url 'new' %}" method="POST">
-        {% csrf_token %}
-        <hr>Enter the upper bound: <input type="number" name="upper-bound" id="upper-bound"><hr>
-        <hr>Enter the lower bound: <input type="number" name="lower-bound" id="lower-bound"><hr>
-        <hr>Enter the credits: <input type="number" name="_credits" id="_credits"><hr>
-        <input type="submit" value="Next">
-    </form>
-<h3>Number of courses selected: {{n}}</h3>
+    <div class="mb-3">
+      <label for="formGroupExampleInput" class="form-label"
+        >Enter the upper bound:
+      </label>
+      <input
+        type="number"
+        class="form-control"
+        name="upper-bound"
+        id="formGroupExampleInput"
+        placeholder=""
+      />
+    </div>
+    <div class="mb-3">
+      <label for="formGroupExampleInput2" class="form-label"
+        >Enter the lower bound:
+      </label>
+      <input
+        type="number"
+        class="form-control"
+        id="formGroupExampleInput2"
+        name="lower-bound"
+        placeholder=""
+      />
+    </div>
+    <div class="mb-3">
+      <label for="formGroupExampleInput2" class="form-label"
+        >Enter credits as a single string (Any order):
+      </label>
+      <input
+        type="number"
+        class="form-control"
+        name="_credits"
+        id="formGroupExampleInput2"
+        placeholder="Example: '45342' for 5 courses"
+      />
+    </div>
+    <input class="btn btn-success" type="submit" value="Next" />
+  </form>
+</div>
 {% endblock content %}
-    
-    
-    

@@ -2,12 +2,19 @@
 
 {% block content %}
 
-<div>
-        <h1>Number of courses: {{number}}</h1>
-       <h1>You have chosen not to randomize</h1> 
-        <a href="{% url 'inter' %}">Confirm</a>
-        
-    </div>
+<div class="container" style="width: 50%;margin-top: 150px;" >
+    
+    <ol class="list-group list-group-numbered">
+        <li class="list-group-item">Number of courses: {{number}}</li>
+        <li class="list-group-item">To randomize: False</li>
+      </ol>
+    <a class="btn btn-success" href="{% url 'inter' %}" style="margin-top: 20px;margin-right: 20px;">Confirm</a>
+    <a class="btn btn-info" href="{{ request.META.HTTP_REFERER }}" style="margin-top: 20px;">Back</a>
+    
+</div>
+
 
 {% endblock content %}
+    
+
     

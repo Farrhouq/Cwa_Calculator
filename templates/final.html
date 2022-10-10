@@ -1,15 +1,25 @@
 {% extends 'main.html' %} {% block content %} 
-<h1>The results are shown below: </h1>
+
+<div class="container" style="width: 50%;margin-top:20px">
+  <h2 style="color: blue; margin:5px;margin-left:100px;">Results</h2>
 {% for i in sup %}
-
-      <div class="course">
-        <hr>
-        <div class="label" style="margin: 10px;">Course[{{i.p2}}] score: {{i.p0}}</div>
-        <div class="label2" style="margin: 10px;">Credit hour(s): {{i.p1}}</div>
-        
-      </div>
-
-{% endfor %}
+      <ol class="list-group list-group-numbered">
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">Course[{{i.p2}}] score: {{i.p0}}</div>
+            Credit hour(s): {{i.p1}}
+          </div>
+        </li>
+      </ol>
+      {% endfor %}
+    </div>
 <hr>
-<h1>Your CWA is: {{cwa}}</h1> <a href="{% url 'home' %}"><h3>Calculate Again</h3></a>
+<h1>Your CWA is: {{cwa}}</h1>
+{% if request.user.is_authenticated %}
+<a href="{% url 'home' %}"><h5>Continue to next semester to cumulate your CWA</h5></a>
+<a href="{% url 'refresh' %}"><h5>Delete all data and start afresh</h5></a>
+{% else %}
+<a href="{% url 'home' %}"><h5>Calculate Again</h5></a>
+{% endif %}
+
 {% endblock content %}

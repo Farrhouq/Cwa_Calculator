@@ -9,9 +9,11 @@
     <form class="form-group" action="{% url 'two' %}" method="post">
         {% csrf_token %}
         <hr>Enter the number of courses: <input type="number" name="number" id="number"><hr>
-        Do you want to randomize?: <input type="checkbox" name="randomize" id="randomize">
+        Do you want to randomize? <input type="checkbox" name="randomize" id="randomize">
         <hr>
-        <input type="submit" value="Next">
+        <h6 style="color: red;">Note: Only logged in users can calculate over more than one semester</h6>
+        <input class="btn btn-success" type="submit" value="Next">
     </form>
+
 
 {% endblock content %}

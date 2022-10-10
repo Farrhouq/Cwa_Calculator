@@ -3,6 +3,8 @@ from re import L
 from django.shortcuts import render, redirect
 from .forms import RegisterForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
+from .models import ResultSet
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -40,7 +42,9 @@ def home(request):
 def to_randomize(request):
     global number
     number = request.POST.get('number')
-    if number == 0:
+    try:
+        i =int(number)
+    except:
         return redirect('home')
 
     if request.method == 'POST' and request.POST.get('randomize') == 'on':
@@ -53,22 +57,25 @@ def to_randomize(request):
         }
         return render(request, 'to_randomize.html', context)
     elif number != None:
-        range_list = [i + 1 for i in range(int(number))]
-        return render(request, 'to_not_randomize.html', {
-            'number': number,
-            'range_list': range_list,
-            
-        })
+        try:
+            range_list = [i + 1 for i in range(int(number))]
+            return render(request, 'to_not_randomize.html', {
+                'number': number,
+                'range_list': range_list,   
+            })
+        except:
+            return redirect('home')
     else:
         return redirect('home')
 
 
 def three(request):
     #if user chooses not to randomize
-    if number == 0:
-        return redirect('home')
+    if number == 0 or number == None:
+           return redirect('home')
     context = {}
     return render(request, 'to_not_randomize.html', context)
+    
 
 
 def randomize(credits, upper_bound, lower_bound) -> list:
@@ -149,6 +156,10 @@ def inter(request):
 
 
 def tr2(request):
+    try:
+        i = int(number)
+    except:
+        return redirect('home')
     if number == 0:
         return redirect('home')
     return render(request, 'tr2.html', {'n': number})
@@ -157,6 +168,7 @@ def tr2(request):
 def final(request):
     if request.POST.get('sc1') == None:
         return redirect('home')
+        
     gotten = []
     gotten2 = []
     ov = []
@@ -182,22 +194,40 @@ def final(request):
         points_obtained += (score * credit)
         total_credits += credit
 
+    if request.user.is_authenticated:
+        user_results = request.user.resultset_set.all()
+        for i in user_results:
+            total_credits += i.total_credits
+            points_obtained += i.weight
+
     if total_credits == 0:
         cwa = None
     else:
         cwa = points_obtained / total_credits
 
+    if len(ov) == 0:
+        return redirect('home')
+
+    if number == 0 or number == None:
+        return redirect('home')
+
     sup = []
     for i in listq:
         el = New(i)
         sup.append(el)
-
+    if request.user.is_authenticated:
+        ResultSet.objects.create(
+            user = request.user,
+            weight = points_obtained,
+            total_credits = total_credits
+        )
     context = {
         'g1': gotten,
         'g2': gotten2,
         'ov': ov,
         'sup': sup,
         'cwa': round(cwa,2),
+        
     }
     return render(request, 'final.html', context)
 
@@ -213,3 +243,21 @@ def register(request):
             return redirect('home')
     context = {'form': form,}
     return render(request, 'register.html', {'form':form})
+
+def logoutUser(request):
+
+    logout(request)
+    return redirect('home')
+
+
+def refresh(request):
+    page = 'delete_all'
+    return render(request, 'refresh.html', {'page':page})
+
+
+def delete_all(request):
+    results = request.user.resultset_set.all()
+    for i in results:
+        i.delete()
+    return redirect('home')
+

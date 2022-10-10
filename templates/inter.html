@@ -6,18 +6,6 @@
 
 <div style="padding: 10px;"><h1>Enter the scores below: </h1></div>
     
-    <!-- <form  action="{% url 'final' %}" method="POST">
-        {% csrf_token %}
-        {% for n in numbers %}
-        Course score {{n}}: <input type="text" name="sc{{n}}" id="sc{{n}}">
-        Credits : <input type="number" name="cr{{n}}" id="cr{{n}}"><hr>
-        {% endfor %}
-        
-        <hr>
-        
-
-    </form> -->
-
     <form action="{% url 'final' %}" method="POST">
         {% csrf_token %}
         {% for n in numbers %}
@@ -31,6 +19,7 @@
       </div>
       {% endfor %}
       <button type="submit" class="btn btn-primary">Next</button>
+      <a href="" class="btn btn-primary">Undo All</a>
     </form>
 {% endblock content %}
 

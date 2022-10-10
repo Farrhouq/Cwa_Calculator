@@ -1,7 +1,7 @@
 {% extends 'main.html' %}
 {% load  crispy_forms_tags %}
 {% block content %}
-<div class="container" style="width: 40%;">
+<div class="container" style="width: 75%;">
 <form class="form-group" action="" method="POST">
     {% csrf_token %}
     {{form | crispy}}

@@ -13,9 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from tkinter import N
 from django.contrib import admin
 from django.urls import path, include
-from base.views import final,  inter,  home, new, register,  to_randomize, tr2
+from base.views import delete_all, final,  inter,  home, logoutUser, new, refresh, register,  to_randomize, tr2
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +29,7 @@ urlpatterns = [
     path('final', final, name='final'),
     path('', include('django.contrib.auth.urls')),
     path('register', register, name='register'),
+    path('logout2', logoutUser, name='logout2'),
+    path('refresh', refresh, name='refresh'),
+    path('delete_all', delete_all, name='delete_all'),
 ]
