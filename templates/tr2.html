@@ -1,7 +1,7 @@
 {% extends 'main.html' %} {% block content %}
 
-<div class="container" style="width: 50%; margin-top: 80px">
-  <h5>Number of courses selected: {{n}}</h5>
+<div class="container" style="width: 70%; margin-top: 80px">
+  <h5>Number of courses selected: {{number}}</h5>
   <p style="color: red">
     Make sure the length of the credits match the number of courses selected
   </p>
@@ -45,6 +45,7 @@
       />
     </div>
     <input class="btn btn-success" type="submit" value="Next" />
+    <input type="hidden" name="number" value="{{number}}">
   </form>
 </div>
 {% endblock content %}

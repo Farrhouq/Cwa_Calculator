@@ -8,20 +8,15 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-number = 0
+
 
 class specialStr:
 
     def __init__(self, ss):
         self.ss = ss
-        self.part1 = ss[0:9]
-        self.part2 = ss[9:19]
-        self.part3 = ss[19:44]
-
-    def correct(self):
-        if self.part3[0] != 'c':
-            self.part3 = 'c' + self.part3
-
+        self.part1 = 'Course['+ str(ss[0]) + ']'
+        self.part2 = 'Score: '+ str(ss[1])
+        self.part3 = 'Credit(s): '+ str(ss[2])
 
 class New:
 
@@ -40,41 +35,26 @@ def home(request):
 
 
 def to_randomize(request):
-    global number
     number = request.POST.get('number')
-    try:
-        i =int(number)
-    except:
+    if number == None :
         return redirect('home')
+    if request.method == 'POST':
+        if request.POST.get('randomize') == 'on':
+            number = request.POST.get('number')
+            context = {
+                'number': number,
+            }
+            return render(request, 'tr2.html', context)
 
-    if request.method == 'POST' and request.POST.get('randomize') == 'on':
-        number = request.POST.get('number')
-        to_randomize = request.POST.get('randomize')
-
-        context = {
-            'number': number,
-            'to_randomize': to_randomize,
-        }
-        return render(request, 'to_randomize.html', context)
-    elif number != None:
-        try:
+        else:
             range_list = [i + 1 for i in range(int(number))]
-            return render(request, 'to_not_randomize.html', {
+            return render(request, 'enter_scores.html', {
                 'number': number,
                 'range_list': range_list,   
             })
-        except:
-            return redirect('home')
-    else:
-        return redirect('home')
+    
 
 
-def three(request):
-    #if user chooses not to randomize
-    if number == 0 or number == None:
-           return redirect('home')
-    context = {}
-    return render(request, 'to_not_randomize.html', context)
     
 
 
@@ -90,16 +70,18 @@ def randomize(credits, upper_bound, lower_bound) -> list:
 
 def new(request):
 
-    n = number
-    if n == 0:
-        return redirect('home')
-    upper_bound = int(request.POST.get('upper-bound'))
-    lower_bound = int(request.POST.get('lower-bound'))
-    _credits = request.POST.get('_credits')
+    try:
+        number = request.POST.get('number')
+        upper_bound = int(request.POST.get('upper-bound'))
+        lower_bound = int(request.POST.get('lower-bound'))
+        _credits = request.POST.get('_credits')
+    except:
+        return redirect('to_randomize')
+    
     points_obtained = 0
     total_credits = 0
     lee = len(str(_credits))
-    tru = str(lee) == str(n)
+    tru = str(lee) == str(number)
     if tru:
         sc = randomize(str(_credits), upper_bound, lower_bound)
         som = []
@@ -111,7 +93,7 @@ def new(request):
             ss.append(score)
             ss2.append(credit)
             som.append(
-                f'course[{i}]score = {int(score)}credit hour(s) = {credit}')
+                [i, score, credit])
             points_obtained += (score * credit)
             total_credits += credit
         
@@ -126,7 +108,6 @@ def new(request):
         part = []
         for element in som:
             el = specialStr(element)
-            el.correct()
             part.append(el)
         context = {
             'lower_bound': lower_bound,
@@ -140,37 +121,11 @@ def new(request):
         }
         return render(request, 'new.html', context)
     else:
-        return redirect('tr2')
-
-
-def inter(request):
-    try:
-        i = int(number)
-    except:
-        return redirect('home')
-
-    if number == 0 or number == None:
-        return redirect('home')
-    else:
-        number_s = [i + 1 for i in range(int(number))]
-
-        return render(request, 'inter.html', {
-            'numbers': number_s,
-            'number': number
-        })
-
-
-def tr2(request):
-    try:
-        i = int(number)
-    except:
-        return redirect('home')
-    if number == 0:
-        return redirect('home')
-    return render(request, 'tr2.html', {'n': number})
+        return redirect('to_randomize')
 
 
 def final(request):
+    number = request.POST.get('number')
     if request.POST.get('sc1') == None:
         return redirect('home')
         
@@ -200,7 +155,7 @@ def final(request):
             points_obtained += (score * credit)
             total_credits += credit
     except:
-        return redirect('inter')
+        return redirect('home')
 
 
     if request.user.is_authenticated:
@@ -270,3 +225,17 @@ def delete_all(request):
         i.delete()
     return redirect('home')
 
+
+def test1(request):
+    return render(request, 'test1.html', {})
+
+
+def test2(request):
+    test1 = request.POST.get('test1')
+    return render(request, 'test2.html', {'test1':test1})
+
+
+def test3(request):
+    test2 = request.POST.get('test2')
+    test21 = request.POST.get('test21')
+    return render(request, 'test3.html', {'test2':test2})

@@ -8,7 +8,7 @@
     
     <form action="{% url 'final' %}" method="POST">
         {% csrf_token %}
-        {% for n in numbers %}
+        {% for n in range_list %}
     <div class="row">
         <div class="col">
           <input type="number" class="form-control" name="sc{{n}}" placeholder="Course {{n}} score" aria-label="First name">
@@ -18,6 +18,7 @@
         </div>
       </div>
       {% endfor %}
+      <input type="hidden" name="number" value="{{number}}">
       <button type="submit" class="btn btn-primary">Next</button>
       <a href="" class="btn btn-primary">Undo All</a>
     </form>

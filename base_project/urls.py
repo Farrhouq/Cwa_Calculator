@@ -14,17 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from tkinter import N
+from unicodedata import name
 from django.contrib import admin
 from django.urls import path, include
-from base.views import delete_all, final,  inter,  home, logoutUser, new, refresh, register,  to_randomize, tr2
+from base.views import delete_all, final, home, logoutUser, new, refresh, register,  to_randomize
+from base.views import test1, test2, test3
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home' ),
-    path('two', to_randomize, name='two'),
-    path('three', to_randomize, name='three'),
-    path('inter', inter, name='inter'),
-    path('tr2', tr2, name='tr2'),
+    path('to_randomize', to_randomize, name='to_randomize'),
+    
     path('new', new, name='new'),
     path('final', final, name='final'),
     path('', include('django.contrib.auth.urls')),
@@ -32,4 +32,9 @@ urlpatterns = [
     path('logout2', logoutUser, name='logout2'),
     path('refresh', refresh, name='refresh'),
     path('delete_all', delete_all, name='delete_all'),
+
+    path('test1', test1, name='test1'),
+    path('test2', test2, name='test2'),
+    path('test3', test3, name='test3'),
+
 ]
