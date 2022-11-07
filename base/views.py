@@ -5,27 +5,10 @@ from .forms import RegisterForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from .models import ResultSet
 from django.contrib.auth.decorators import login_required
+from logic.functions import randomize
+from logic.classes import SpecialStr, New
 
 # Create your views here.
-
-
-
-class specialStr:
-
-    def __init__(self, ss):
-        self.ss = ss
-        self.part1 = 'Course['+ str(ss[0]) + ']'
-        self.part2 = 'Score: '+ str(ss[1])
-        self.part3 = 'Credit(s): '+ str(ss[2])
-
-class New:
-
-    def __init__(self, tup):
-        self.tup = tup
-        self.p0 = tup[0]
-        self.p1 = tup[1]
-        self.p2 = tup[2]
-
 
 def home(request):
     return render(
@@ -36,7 +19,7 @@ def home(request):
 
 def to_randomize(request):
     number = request.POST.get('number')
-    if number == None :
+    if number == None:
         return redirect('home')
     if request.method == 'POST':
         if request.POST.get('randomize') == 'on':
@@ -50,26 +33,11 @@ def to_randomize(request):
             range_list = [i + 1 for i in range(int(number))]
             return render(request, 'enter_scores.html', {
                 'number': number,
-                'range_list': range_list,   
+                'range_list': range_list,
             })
-    
-
-
-    
-
-
-def randomize(credits, upper_bound, lower_bound) -> list:
-    import random
-    score_and_credits = []
-    for j in credits:
-        i = round(random.uniform(lower_bound, upper_bound), 2)
-        j = int(j)
-        score_and_credits.append((i, j))
-    return score_and_credits
 
 
 def new(request):
-
     try:
         number = request.POST.get('number')
         upper_bound = int(request.POST.get('upper-bound'))
@@ -77,7 +45,7 @@ def new(request):
         _credits = request.POST.get('_credits')
     except:
         return redirect('to_randomize')
-    
+
     points_obtained = 0
     total_credits = 0
     lee = len(str(_credits))
@@ -92,22 +60,21 @@ def new(request):
             score = element[0]
             ss.append(score)
             ss2.append(credit)
-            som.append(
-                [i, score, credit])
+            som.append([i, score, credit])
             points_obtained += (score * credit)
             total_credits += credit
-        
+
         points_obtained = 0
         total_credits = 0
         for i in range(len(ss)):
             points_obtained += (int(ss[i]) * int(ss2[i]))
             total_credits += ss2[i]
 
-        cwa = points_obtained/total_credits
+        cwa = points_obtained / total_credits
 
         part = []
         for element in som:
-            el = specialStr(element)
+            el = SpecialStr(element)
             part.append(el)
         context = {
             'lower_bound': lower_bound,
@@ -115,9 +82,9 @@ def new(request):
             'credits': _credits,
             'p1': part,
             'upper_bound': upper_bound,
-            'ss':ss,
-            'ss2':ss2,
-            'cwa':round(cwa, 2)
+            'ss': ss,
+            'ss2': ss2,
+            'cwa': round(cwa, 2)
         }
         return render(request, 'new.html', context)
     else:
@@ -128,7 +95,7 @@ def final(request):
     number = request.POST.get('number')
     if request.POST.get('sc1') == None:
         return redirect('home')
-        
+
     gotten = []
     gotten2 = []
     ov = []
@@ -157,7 +124,6 @@ def final(request):
     except:
         return redirect('home')
 
-
     if request.user.is_authenticated:
         user_results = request.user.resultset_set.all()
         for i in user_results:
@@ -180,18 +146,15 @@ def final(request):
         el = New(i)
         sup.append(el)
     if request.user.is_authenticated:
-        ResultSet.objects.create(
-            user = request.user,
-            weight = points_obtained,
-            total_credits = total_credits
-        )
+        ResultSet.objects.create(user=request.user,
+                                 weight=points_obtained,
+                                 total_credits=total_credits)
     context = {
         'g1': gotten,
         'g2': gotten2,
         'ov': ov,
         'sup': sup,
-        'cwa': round(cwa,2),
-        
+        'cwa': round(cwa, 2),
     }
     return render(request, 'final.html', context)
 
@@ -205,18 +168,20 @@ def register(request):
             user.save()
             login(request, user)
             return redirect('home')
-    context = {'form': form,}
-    return render(request, 'register.html', {'form':form})
+    context = {
+        'form': form,
+    }
+    return render(request, 'register.html', {'form': form})
+
 
 def logoutUser(request):
-
     logout(request)
     return redirect('home')
 
 
 def refresh(request):
     page = 'delete_all'
-    return render(request, 'refresh.html', {'page':page})
+    return render(request, 'refresh.html', {'page': page})
 
 
 def delete_all(request):
@@ -224,18 +189,3 @@ def delete_all(request):
     for i in results:
         i.delete()
     return redirect('home')
-
-
-def test1(request):
-    return render(request, 'test1.html', {})
-
-
-def test2(request):
-    test1 = request.POST.get('test1')
-    return render(request, 'test2.html', {'test1':test1})
-
-
-def test3(request):
-    test2 = request.POST.get('test2')
-    test21 = request.POST.get('test21')
-    return render(request, 'test3.html', {'test2':test2})
