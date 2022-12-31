@@ -5,8 +5,8 @@ from .forms import RegisterForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from .models import ResultSet
 from django.contrib.auth.decorators import login_required
-from logic.functions import randomize
-from logic.classes import SpecialStr, New
+from .logic.functions import randomize
+from .logic.classes import SpecialStr, New
 
 # Create your views here.
 
